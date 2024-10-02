@@ -1,6 +1,14 @@
 import { defineMiddleware, sequence } from "astro/middleware";
 import htmlMinifier from "html-minifier";
 
+/*
+Some default pass through URLS, so middleware isn't ran
+  1. api/ routes
+  2. /login
+  3. filename or custom domains like example.com.
+*/
+const passThroughUrls = new RegExp("(api/|/login|[\\w-]+\\.\\w+).*");
+
 export const minifier = defineMiddleware(async (_context, next) => {
   const response = await next();
   // check if the response is returning some HTML
@@ -20,19 +28,23 @@ export const minifier = defineMiddleware(async (_context, next) => {
 });
 
 export const domainHandler = defineMiddleware(async (context, next) => {
-  // Pass through on rewrite...
+  const siteUrl = `${context.url.protocol}//${
+    import.meta.env.PUBLIC_ROOT_DOMAIN
+  }`;
+  // Pass through on rewrite or excluded url.
   if (
     context.request.headers.get("X-Astro-Rewrite") ||
-    context.url.pathname.endsWith("/login")
+    passThroughUrls.exec(context.url.pathname)
   ) {
     return next();
   }
-  // Get hostname of request (e.g. demo.giftd.fund, demo.localhost:3000)
+  // Get hostname of request (e.g. demo.localhost:3000)
   const hostname = context.url.host;
   const searchParams = context.url.searchParams.toString();
   const path = `${context.url.pathname}${
     searchParams.length > 0 ? `?${searchParams}` : ""
   }`;
+
   //rewrite for app pages
   if (hostname === `app.${import.meta.env.PUBLIC_ROOT_DOMAIN}`) {
     // Check session...
@@ -43,12 +55,8 @@ export const domainHandler = defineMiddleware(async (context, next) => {
       return context.redirect("/");
     }
 
-    const appUrl = new URL(
-      `/app${path === "/" ? "" : path}`,
-      `${context.url.protocol}//${import.meta.env.PUBLIC_ROOT_DOMAIN}`
-    );
+    const appUrl = new URL(`/app${path === "/" ? "" : path}`, siteUrl);
 
-    // Ensure the rewrite is correct
     return context.rewrite(
       new Request(appUrl, {
         headers: {
@@ -58,14 +66,12 @@ export const domainHandler = defineMiddleware(async (context, next) => {
     );
   }
 
+  // Check if Requested URL is base domain.
   if (
     context.url.toString() ===
     `${context.url.protocol}//${import.meta.env.PUBLIC_ROOT_DOMAIN}/`
   ) {
-    const homeUrl = new URL(
-      `/home${path === "/" ? "" : path}`,
-      `${context.url.protocol}//${import.meta.env.PUBLIC_ROOT_DOMAIN}`
-    );
+    const homeUrl = new URL(`/home${path === "/" ? "" : path}`, siteUrl);
     return context.rewrite(
       new Request(homeUrl, {
         headers: {
@@ -75,11 +81,9 @@ export const domainHandler = defineMiddleware(async (context, next) => {
     );
   }
 
-  const domainUrl = new URL(
-    `/${hostname}${path === "/" ? "" : path}`,
-    `${context.url.protocol}//${import.meta.env.PUBLIC_ROOT_DOMAIN}`
-  );
-  return next(
+  // rewrite everything else to `/[domain]/[slug] dynamic route
+  const domainUrl = new URL(`/${hostname}${path === "/" ? "" : path}`, siteUrl);
+  return context.rewrite(
     new Request(domainUrl, {
       headers: {
         "X-Astro-Rewrite": "true",

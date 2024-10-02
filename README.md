@@ -19,9 +19,19 @@
 The **recommended** way to install the latest version of Astro is by running the command below:
 
 ```bash
-npm create astro@latest --template leccles/astro-platforms
+pnpm create astro@latest --template leccles1/astro-platforms
 ```
 
+## Run
+```bash
+pnpm start
+```
+
+## Build
+
+```bash
+pnpm build
+```
 ## Documentation
 
 Coming Soon

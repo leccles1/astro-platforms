@@ -15,8 +15,9 @@
 
 - ~~Custom Middleware that handles rewrites for `app.<domain>` and subdomains~~
 - Setup Drizzle, and Turso...
-- Implement auth via Lucia
-  - Protect `app.<domain>` behind auth
+- ~~Implement auth via Lucia~~
+  - ~~Protect `app.<domain>` behind auth~~
+- Ensure deployed target works out the box..
 - Provide proper dashboard at `app.<domain>.com`
 - Enable true multi tenancy, with a db per tenant...
 
@@ -28,14 +29,14 @@ The **recommended** way to install the latest version of Astro is by running the
 pnpm create astro@latest --template leccles1/astro-platforms
 ```
 
-Create a `.env` file, use `./env.example` to see required environment vars
+Create a `.env` file, use `./env.example` to see required environment vars. `src/env.d.ts` is also setup to provide intelisense for `import.meta.env` calls
 
 ## Run
 
 ```bash
 pnpm start
 ```
-
+Will start up a local development version, using an in memory SQLite database.
 ## Build
 
 ```bash

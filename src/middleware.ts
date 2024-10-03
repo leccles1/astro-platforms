@@ -1,5 +1,6 @@
 import { defineMiddleware, sequence } from "astro/middleware";
 import htmlMinifier from "html-minifier";
+import { lucia } from "./lib/auth";
 
 /*
 Some default pass through URLS, so middleware isn't ran
@@ -7,7 +8,7 @@ Some default pass through URLS, so middleware isn't ran
   2. /login
   3. filename or custom domains like example.com.
 */
-const passThroughUrls = new RegExp("(api/|/login|[\\w-]+\\.\\w+).*");
+const passThroughUrls = new RegExp("(api/|chunks|[\\w-]+\\.\\w+).*");
 
 export const minifier = defineMiddleware(async (_context, next) => {
   const response = await next();
@@ -44,11 +45,11 @@ export const domainHandler = defineMiddleware(async (context, next) => {
   const path = `${context.url.pathname}${
     searchParams.length > 0 ? `?${searchParams}` : ""
   }`;
-
   //rewrite for app pages
-  if (hostname === `app.${import.meta.env.PUBLIC_ROOT_DOMAIN}`) {
+  if (hostname === `${import.meta.env.AUTH_DOMAIN}`) {
     // Check session...
-    const session = true;
+    const session = context.locals.session;
+    console.log(context.locals.user);
     if (!session && path !== "/login") {
       return context.redirect("/login");
     } else if (session && path === "/login") {
@@ -56,8 +57,7 @@ export const domainHandler = defineMiddleware(async (context, next) => {
     }
 
     const appUrl = new URL(`/app${path === "/" ? "" : path}`, siteUrl);
-
-    return context.rewrite(
+    return next(
       new Request(appUrl, {
         headers: {
           "X-Astro-Rewrite": "true",
@@ -72,7 +72,7 @@ export const domainHandler = defineMiddleware(async (context, next) => {
     `${context.url.protocol}//${import.meta.env.PUBLIC_ROOT_DOMAIN}/`
   ) {
     const homeUrl = new URL(`/home${path === "/" ? "" : path}`, siteUrl);
-    return context.rewrite(
+    return next(
       new Request(homeUrl, {
         headers: {
           "X-Astro-Rewrite": "true",
@@ -83,7 +83,7 @@ export const domainHandler = defineMiddleware(async (context, next) => {
 
   // rewrite everything else to `/[domain]/[slug] dynamic route
   const domainUrl = new URL(`/${hostname}${path === "/" ? "" : path}`, siteUrl);
-  return context.rewrite(
+  return next(
     new Request(domainUrl, {
       headers: {
         "X-Astro-Rewrite": "true",
@@ -92,4 +92,34 @@ export const domainHandler = defineMiddleware(async (context, next) => {
   );
 });
 
-export const onRequest = sequence(domainHandler, minifier);
+const authHandler = defineMiddleware(async (context, next) => {
+  const sessionId = context.cookies.get(lucia.sessionCookieName)?.value ?? null;
+  if (!sessionId) {
+    context.locals.user = null;
+    context.locals.session = null;
+    return next();
+  }
+
+  const { session, user } = await lucia.validateSession(sessionId);
+  if (session && session.fresh) {
+    const sessionCookie = lucia.createSessionCookie(session.id);
+    context.cookies.set(
+      sessionCookie.name,
+      sessionCookie.value,
+      sessionCookie.attributes
+    );
+  }
+  if (!session) {
+    const sessionCookie = lucia.createBlankSessionCookie();
+    context.cookies.set(
+      sessionCookie.name,
+      sessionCookie.value,
+      sessionCookie.attributes
+    );
+  }
+  context.locals.session = session;
+  context.locals.user = user;
+  return next();
+});
+
+export const onRequest = sequence(authHandler, domainHandler, minifier);

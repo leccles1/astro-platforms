@@ -1,17 +1,20 @@
 // @ts-check
 import { defineConfig } from "astro/config";
-import node from "@astrojs/node";
-
 import db from "@astrojs/db";
+import aws from "astro-sst";
 
 // https://astro.build/config
 export default defineConfig({
   output: "server",
-
-  adapter: node({
-    mode: "standalone",
+  site: import.meta.env.PROD
+    ? `https://${import.meta.env.PUBLIC_ROOT_DOMAIN}/`
+    : "http://localhost:4321",
+  adapter: aws({
+    serverRoutes: ["api/*", "app/login"],
   }),
-
+  redirects: {
+    "favicon.ico": "/favicon.svg",
+  },
   security: {
     checkOrigin: true,
   },

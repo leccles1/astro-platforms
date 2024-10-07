@@ -11,6 +11,9 @@
 
 </div>
 
+## SST Deploy
+This branch is the SST deployment of the Astro Platforms starter.
+
 ## Todo
 
 - ~~Custom Middleware that handles rewrites for `app.<domain>` and subdomains~~
@@ -26,21 +29,34 @@
 The **recommended** way to install the latest version of Astro is by running the command below:
 
 ```bash
-pnpm create astro@latest --template leccles1/astro-platforms
+pnpm create astro@latest --template leccles1/astro-platforms#sst-deploy
 ```
 
-Create a `.env` file, use `./env.example` to see required environment vars. `src/env.d.ts` is also setup to provide intelisense for `import.meta.env` calls
+Configure a `.env` file with the below values
+```
+#Root domain of your site
+ROOT_DOMAIN=example-domain.xyz
+AUTH_DOMAIN=app.example-domain.xyz
+
+#Databse configuration (libsql by default)
+DB_REMOTE_URL=libsql://<libsql db url>
+DB_APP_TOKEN=<libsql token>
+```
+
 
 ## Run
 
 ```bash
-pnpm start
+sst dev
 ```
-Will start up a local development version, using an in memory SQLite database.
-## Build
+Will start up a local development version, using an in memory SQLite database. accessible at `localhost:4321`
+
+## Build & deploy
+
+set a stage name like `production`
 
 ```bash
-pnpm build
+sst deploy --stage production
 ```
 
 ## Documentation

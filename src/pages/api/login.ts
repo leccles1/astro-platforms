@@ -61,6 +61,6 @@ export async function POST(context: APIContext): Promise<Response> {
   );
 
   return context.redirect(
-    `${context.url.protocol}//${import.meta.env.AUTH_DOMAIN}`
+    `${context.url.protocol}//${import.meta.env.PUBLIC_ROOT_AUTH_DOMAIN}`
   );
 }

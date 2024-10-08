@@ -1,5 +1,4 @@
 import { defineMiddleware, sequence } from "astro/middleware";
-import htmlMinifier from "html-minifier";
 import { lucia } from "./lib/auth";
 
 /*
@@ -9,24 +8,6 @@ Some default pass through URLS, so middleware isn't ran
   3. filename or custom domains like example.com.
 */
 const passThroughUrls = new RegExp("(api/|chunks|[\\w-]+\\.\\w+).*");
-
-export const minifier = defineMiddleware(async (_context, next) => {
-  const response = await next();
-  // check if the response is returning some HTML
-  if (response.headers.get("content-type") === "text/html") {
-    let headers = response.headers;
-    let html = await response.text();
-    let newHtml = htmlMinifier.minify(html, {
-      removeAttributeQuotes: true,
-      collapseWhitespace: true,
-    });
-    return new Response(newHtml, {
-      status: 200,
-      headers,
-    });
-  }
-  return response;
-});
 
 export const domainHandler = defineMiddleware(async (context, next) => {
   const siteUrl = `${context.url.protocol}//${
@@ -46,7 +27,7 @@ export const domainHandler = defineMiddleware(async (context, next) => {
     searchParams.length > 0 ? `?${searchParams}` : ""
   }`;
   //rewrite for app pages
-  if (hostname === `${import.meta.env.AUTH_DOMAIN}`) {
+  if (hostname === `${import.meta.env.PUBLIC_ROOT_AUTH_DOMAIN}`) {
     // Check session...
     const session = context.locals.session;
     console.log(context.locals.user);
@@ -122,4 +103,4 @@ const authHandler = defineMiddleware(async (context, next) => {
   return next();
 });
 
-export const onRequest = sequence(authHandler, domainHandler, minifier);
+export const onRequest = sequence(authHandler, domainHandler);

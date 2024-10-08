@@ -1,14 +1,17 @@
 import { Lucia } from "lucia";
-import { AstroDBAdapter } from "lucia-adapter-astrodb";
-import { db, User, Session } from "astro:db";
+import { LibSQLAdapter } from "@lucia-auth/adapter-sqlite";
 
-const adapter = new AstroDBAdapter(db, Session, User);
+import { libSqlClient } from "../db";
+
+const adapter = new LibSQLAdapter(libSqlClient, {
+  user: "User",
+  session: "Session",
+});
 
 export const lucia = new Lucia(adapter, {
   sessionCookie: {
     attributes: {
       secure: import.meta.env.PROD,
-      // domain: `*.${import.meta.env.PUBLIC_ROOT_DOMAIN}`,
     },
   },
   getUserAttributes: (attributes) => {

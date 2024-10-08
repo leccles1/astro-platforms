@@ -1,25 +1,14 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import Card from '../../components/Card.astro';
-const user = Astro.locals.user
-const authDomain = import.meta.env.AUTH_DOMAIN
+import AuthedLayout from '../../layouts/AuthedLayout.astro'
 ---
+<AuthedLayout>
+  <main slot="content" class="flex max-w-screen-xl flex-col space-y-12 p-8">
+    <div class="flex flex-col space-y-6">
+      <h1 class="text-3xl font-bold dark:white-text">Overview</h1>
+    </div>
 
-<Layout title="Welcome to Astro.">
-	<main>
-		<h1>Welcome to the Astro App Dashboard {user && <span class="text-gradient">{user.email}</span>}</h1>
-		<p class="instructions">
-			This is the app directory <code>src/pages/app</code> in your project.<br />
-		</p>
-		<p class="instructions">
-			Notice how the URL is a subdomain of <code>{authDomain}</code>, but realistically <code>/app</code><br />
-			is the rendered route.
-		</p>
-		{}
-		<ul role="list" class="link-card-grid">
-			<Card href={`${Astro.url.protocol}//${import.meta.env.PUBLIC_ROOT_DOMAIN}`} title="Home" body="" />
-			<Card href={`${Astro.url.protocol}//demo.${import.meta.env.PUBLIC_ROOT_DOMAIN}`} title="Demo Site" body="" />
-			<Card href="/api/logout" title="Logout" body="Logout now" />
-		</ul>
-	</main>
-</Layout>
+    <div class="flex flex-col space-y-6">
+      <h1 class="text-3xl font-bold dark:white-text">Top Sites</h1>
+    </div>
+  </main>
+</AuthedLayout>

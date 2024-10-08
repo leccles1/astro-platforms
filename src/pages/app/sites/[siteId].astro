@@ -1,0 +1,12 @@
+---
+import AuthedLayout from "../../../layouts/AuthedLayout.astro";
+const {siteId} = Astro.params
+console.log(siteId)
+// if(!siteId) Astro.redirect('404')
+---
+
+<AuthedLayout>
+  <main slot="content">
+    Site Config for: {siteId}
+  </main>
+</AuthedLayout>

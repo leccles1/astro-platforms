@@ -1,6 +1,8 @@
 import { lucia } from "../../lib/auth";
 import { Argon2id } from "oslo/password";
-import { db, User, eq } from "astro:db";
+import { db } from "../../db/index";
+import { User } from "../../../db/schema";
+import { eq } from "drizzle-orm";
 import type { APIContext } from "astro";
 
 export async function POST(context: APIContext): Promise<Response> {
@@ -42,7 +44,7 @@ export async function POST(context: APIContext): Promise<Response> {
   }
 
   const validPassword = await new Argon2id().verify(
-    existingUser.hashed_password,
+    existingUser.hashed_password!,
     password
   );
 
@@ -61,6 +63,6 @@ export async function POST(context: APIContext): Promise<Response> {
   );
 
   return context.redirect(
-    `${context.url.protocol}//${import.meta.env.AUTH_DOMAIN}`
+    `${context.url.protocol}//${import.meta.env.PUBLIC_ROOT_AUTH_DOMAIN}`
   );
 }

@@ -9,8 +9,8 @@ declare namespace App {
 interface ImportMetaEnv {
   readonly PUBLIC_ROOT_DOMAIN: string;
   readonly AUTH_DOMAIN: string;
-  readonly ASTRO_DB_REMOTE_URL: string;
-  readonly ASTRO_DB_APP_TOKEN: string;
+  readonly DB_REMOTE_URL: string;
+  readonly DB_APP_TOKEN: string;
 }
 
 interface ImportMeta {

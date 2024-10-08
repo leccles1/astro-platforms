@@ -1,8 +1,8 @@
 import type { APIContext, APIRoute } from "astro";
-import { generateId } from "lucia";
 import { Argon2id } from "oslo/password";
 import { lucia } from "../../lib/auth";
-import { db, User } from "astro:db";
+import { db } from "../../db";
+import { User } from "../../../db/schema";
 export const POST: APIRoute = async (context: APIContext) => {
   try {
     const data = await context.request.formData();
@@ -19,16 +19,19 @@ export const POST: APIRoute = async (context: APIContext) => {
       });
     }
 
-    const userId = generateId(15);
+    // const userId = generateId(15);
     const hashedPassword = await new Argon2id().hash(password);
 
-    await db.insert(User).values({
-      id: userId,
-      email: email.toLowerCase(),
-      hashed_password: hashedPassword,
-    });
+    const [user] = await db
+      .insert(User)
+      .values({
+        // id: userId,
+        email: email.toLowerCase(),
+        hashed_password: hashedPassword,
+      })
+      .returning({ id: User.id });
 
-    const session = await lucia.createSession(userId, {});
+    const session = await lucia.createSession(user.id, {});
     const sessionCookie = lucia.createSessionCookie(session.id);
     context.cookies.set(
       sessionCookie.name,

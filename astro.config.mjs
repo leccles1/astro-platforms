@@ -1,7 +1,9 @@
 // @ts-check
 import { defineConfig } from "astro/config";
-import db from "@astrojs/db";
 import aws from "astro-sst";
+import tailwind from "@astrojs/tailwind";
+import icon from "astro-icon";
+import react from "@astrojs/react";
 
 // https://astro.build/config
 export default defineConfig({
@@ -18,10 +20,5 @@ export default defineConfig({
   security: {
     checkOrigin: true,
   },
-  integrations: [db()],
-  vite: {
-    optimizeDeps: {
-      exclude: ["astro:db"],
-    },
-  },
+  integrations: [tailwind(), icon(), react()],
 });

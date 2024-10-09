@@ -5,5 +5,9 @@ import "sst"
 export {}
 declare module "sst" {
   export interface Resource {
+    "astro-platforms": {
+      "type": "sst.aws.Astro"
+      "url": string
+    }
   }
 }

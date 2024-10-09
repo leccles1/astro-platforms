@@ -8,15 +8,20 @@ export default $config({
     };
   },
   async run() {
-    const siteDomain = process.env.ROOT_DOMAIN;
-    const authDomain = process.env.AUTH_DOMAIN;
+    const siteDomain = process.env.PUBLIC_ROOT_DOMAIN;
+    const authDomain = process.env.PUBLIC_ROOT_AUTH_DOMAIN;
     const remoteDbUrl = process.env.DB_REMOTE_URL;
     const dbAppToken = process.env.DB_APP_TOKEN;
 
     if (siteDomain && authDomain && remoteDbUrl && dbAppToken) {
       new sst.aws.Astro("astro-platforms", {
         server: {
-          install: ["@node-rs/argon2", "@node-rs/bcrypt", "@libsql/client"],
+          install: [
+            "@node-rs/argon2",
+            "@node-rs/bcrypt",
+            "@libsql/client",
+            "drizzle-orm",
+          ],
         },
         domain: {
           name: siteDomain,
@@ -27,8 +32,8 @@ export default $config({
             $app.stage === "dev" ? siteDomain : "localhost:4321",
           PUBLIC_ROOT_AUTH_DOMAIN:
             $app.stage === "dev" ? authDomain : "app.localhost:4321",
-          ASTRO_DB_REMOTE_URL: remoteDbUrl,
-          ASTRO_DB_APP_TOKEN: dbAppToken,
+          DB_REMOTE_URL: remoteDbUrl,
+          DB_APP_TOKEN: dbAppToken,
         },
       });
 

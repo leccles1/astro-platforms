@@ -12,4 +12,5 @@ export default defineConfig({
     url: process.env.DB_REMOTE_URL!,
     authToken: process.env.DB_APP_TOKEN!,
   },
+  casing: "snake_case",
 });

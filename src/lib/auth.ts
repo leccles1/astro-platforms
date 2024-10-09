@@ -1,9 +1,9 @@
 import { Lucia } from "lucia";
 import { LibSQLAdapter } from "@lucia-auth/adapter-sqlite";
 
-import { libSqlClient } from "../db";
+import { db } from "../db";
 
-const adapter = new LibSQLAdapter(libSqlClient, {
+const adapter = new LibSQLAdapter(db.$client, {
   user: "User",
   session: "Session",
 });

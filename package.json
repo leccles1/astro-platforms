@@ -9,6 +9,7 @@
     "astro": "astro",
     "preview": "astro preview",
     "server": "node dist/server/entry.mjs",
+    "sso": "aws sso login --sso-session=fsd",
     "sst:deploy": "drizzle-kit push && sst deploy --stage dev",
     "db:generate": "drizzle-kit generate",
     "db:push": "drizzle-kit push"

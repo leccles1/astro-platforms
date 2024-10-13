@@ -2,7 +2,9 @@ import { text, sqliteTable, integer } from "drizzle-orm/sqlite-core";
 import { generateId } from "lucia";
 
 export const User = sqliteTable("User", {
-  id: text().primaryKey().default(generateId(15)),
+  id: text()
+    .primaryKey()
+    .$defaultFn(() => generateId(15)),
   email: text().unique(),
   hashed_password: text(),
 });
@@ -16,7 +18,9 @@ export const Session = sqliteTable("Session", {
 });
 
 export const Site = sqliteTable("Site", {
-  id: text().primaryKey().default(generateId(15)),
+  id: text()
+    .primaryKey()
+    .$defaultFn(() => generateId(15)),
   name: text().notNull(),
   description: text().notNull(),
   subdomain: text().notNull().unique(),
@@ -24,3 +28,5 @@ export const Site = sqliteTable("Site", {
   createdAt: integer(),
   updatedAt: integer(),
 });
+
+export type Site = typeof Site.$inferSelect;

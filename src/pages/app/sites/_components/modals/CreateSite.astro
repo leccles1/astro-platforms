@@ -1,0 +1,76 @@
+---
+import Modal from "@/components/Modal.astro";
+import { actions } from "astro:actions";
+---
+
+<Modal id="createSite" open="Create Site">
+  <form
+    slot="main"
+    class="w-full rounded-md bg-white dark:bg-black md:max-w-md md:border md:border-stone-200 md:shadow dark:md:border-stone-700"
+    action={actions.site.createSite}
+    method="POST"
+  >
+    <div class="relative flex flex-col space-y-4 p-5 md:p-10">
+      <h2 class="text-2xl">Create a new site</h2>
+
+      <div class="flex flex-col space-y-2">
+        <label
+          for="name"
+          class="text-sm font-medium text-stone-500 dark:text-stone-400"
+        >
+          Site Name
+        </label>
+        <input
+          name="name"
+          type="text"
+          placeholder="My Awesome Site"
+          required
+          class="w-full rounded-md border border-stone-200 bg-stone-50 px-4 py-2 text-sm text-stone-600 placeholder:text-stone-400 focus:border-black focus:outline-none focus:ring-black dark:border-stone-600 dark:bg-black dark:text-white dark:placeholder-stone-700 dark:focus:ring-white"
+        />
+      </div>
+
+      <div class="flex flex-col space-y-2">
+        <label for="subdomain" class="text-sm font-medium text-stone-500">
+          Subdomain
+        </label>
+        <div class="flex w-full max-w-md">
+          <input
+            name="subdomain"
+            type="text"
+            placeholder="subdomain"
+            autocapitalize="off"
+            required
+            class="w-full rounded-l-lg border border-stone-200 bg-stone-50 px-4 py-2 text-sm text-stone-600 placeholder:text-stone-400 focus:border-black focus:outline-none focus:ring-black dark:border-stone-600 dark:bg-black dark:text-white dark:placeholder-stone-700 dark:focus:ring-white"
+          />
+
+          <div
+            class="flex items-center rounded-r-lg border border-l-0 border-stone-200 bg-stone-100 px-3 text-sm dark:border-stone-600 dark:bg-stone-800 dark:text-stone-400"
+          >
+            .{import.meta.env.PUBLIC_ROOT_DOMAIN}
+          </div>
+        </div>
+
+        <div class="flex flex-col space-y-2">
+          <label for="description" class="text-sm font-medium text-stone-500">
+            Description
+          </label>
+          <textarea
+            name="description"
+            placeholder="Description about why my site is so awesome"
+            rows={3}
+            class="w-full rounded-md border border-stone-200 bg-stone-50 px-4 py-2 text-sm text-stone-600 placeholder:text-stone-400 focus:border-black focus:outline-none focus:ring-black dark:border-stone-600 dark:bg-black dark:text-white dark:placeholder-stone-700 dark:focus:ring-white"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+    <div
+      class="flex items-center justify-end rounded-b-lg border-t border-stone-200 bg-stone-50 p-3 dark:border-stone-700 dark:bg-stone-800 md:px-10"
+    >
+      <button
+        slot="close"
+        class="rounded-lg border border-black bg-black px-4 py-1.5 text-sm font-medium text-white transition-all hover:bg-white hover:text-black active:bg-stone-100 dark:border-stone-700 dark:hover:border-stone-200 dark:hover:bg-black dark:hover:text-white dark:active:bg-stone-800"
+        >Create Site</button
+      >
+    </div>
+  </form>
+</Modal>

@@ -1,5 +1,5 @@
 import type { APIRoute, APIContext } from "astro";
-import { lucia } from "../../lib/auth";
+import { lucia } from "@/lib/auth";
 
 export const GET: APIRoute = async (context: APIContext) => {
   if (context.locals.session) {

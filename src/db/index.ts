@@ -5,4 +5,5 @@ export const db = await drizzle("turso", {
     url: import.meta.env.DB_REMOTE_URL,
     authToken: import.meta.env.DB_APP_TOKEN,
   },
+  casing: "snake_case",
 });

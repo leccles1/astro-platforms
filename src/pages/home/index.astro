@@ -1,23 +1,29 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import Card from '../../components/Card.astro';
+import Layout from "@/layouts/Layout.astro";
+import Card from "@/components/Card.astro";
 
-const authDomain = import.meta.env.PUBLIC_ROOT_AUTH_DOMAIN
+const authDomain = import.meta.env.PUBLIC_ROOT_AUTH_DOMAIN;
 ---
 
 <Layout title="Welcome to Astro.">
-	<main>
-		<h1><span class="text-gradient">Astro Home</span></h1>
-		<p class="instructions">
-			This is the home directory <code>src/pages/home</code> in your project.<br />
-		</p>
-		<p class="instructions">
-			Notice how the URL remains as a top level domain, but realistically <code>/home</code><br />
-			is the rendered route.
-		</p>
-		<ul role="list" class="link-card-grid">
-			<Card href=`${Astro.url.protocol}//${authDomain}` title="Login or Sign up" body="Try the sign up" />
-		</ul>
-	</main>
+  <main>
+    <h1><span class="text-gradient">Astro Home</span></h1>
+    <p class="instructions">
+      This is the home directory <code>src/pages/home</code> in your project.<br
+      />
+    </p>
+    <p class="instructions">
+      Notice how the URL remains as a top level domain, but realistically <code
+        >/home</code
+      ><br />
+      is the rendered route.
+    </p>
+    <ul role="list" class="link-card-grid">
+      <Card
+        href=`${Astro.url.protocol}//${authDomain}`
+        title="Login or Sign up"
+        body="Try the sign up"
+      />
+    </ul>
+  </main>
 </Layout>
-

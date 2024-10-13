@@ -1,8 +1,9 @@
 import type { APIContext, APIRoute } from "astro";
 import { Argon2id } from "oslo/password";
-import { lucia } from "../../lib/auth";
-import { db } from "../../db";
-import { User } from "../../../db/schema";
+import { lucia } from "@/lib/auth";
+import { db } from "@/db";
+import { User } from "@/db/schema";
+
 export const POST: APIRoute = async (context: APIContext) => {
   try {
     const data = await context.request.formData();

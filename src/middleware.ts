@@ -36,14 +36,13 @@ export const domainHandler = defineMiddleware(
     if (hostname === `${import.meta.env.PUBLIC_ROOT_AUTH_DOMAIN}`) {
       // Check session...
       const session = context.locals.session;
-      console.error("Got session: ", session);
       const isPost = context.request.method === "POST";
+
       if (!session && path !== "/login" && !isPost) {
         return context.redirect("/login");
       } else if (session && path === "/login" && !isPost) {
         return context.redirect("/");
       }
-      console.warn("Path before is: ", path);
       const appPath = path.startsWith("/app")
         ? path
         : `/app${path === "/" ? "" : path}`;

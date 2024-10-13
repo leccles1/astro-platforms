@@ -1,9 +1,5 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import { actions } from "astro:actions";
-const result = Astro.getActionResult(actions.user.signInWithEmail);
-console.log("Got result: ", result);
-const authUrl = `${Astro.url.protocol}//${import.meta.env.PUBLIC_ROOT_AUTH_DOMAIN}`;
 ---
 
 <Layout title="Welcome to Astro.">

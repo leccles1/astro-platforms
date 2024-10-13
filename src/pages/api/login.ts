@@ -46,13 +46,13 @@ export async function POST(context: APIContext): Promise<Response> {
 
   const session = await lucia.createSession(existingUser.id, {});
   const sessionCookie = lucia.createSessionCookie(session.id);
-  console.error(sessionCookie);
+
+  console.error('Setting: ',sessionCookie);
   context.cookies.set(
     sessionCookie.name,
     sessionCookie.value,
     sessionCookie.attributes
   );
-
   return context.redirect(
     `${context.url.protocol}//${import.meta.env.PUBLIC_ROOT_AUTH_DOMAIN}`
   );

@@ -24,7 +24,6 @@ export const site = {
           .returning();
         return site;
       } catch (e) {
-        console.error("Catch block", e);
         throw new ActionError({
           message: "Failed to create Site",
           code: "INTERNAL_SERVER_ERROR",

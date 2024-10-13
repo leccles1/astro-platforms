@@ -1,8 +1,44 @@
 ---
-import AuthedLayout from '../../../layouts/AuthedLayout.astro'
+import AuthedLayout from "@/layouts/AuthedLayout.astro";
+import CreateSite from "./_components/modals/CreateSite.astro";
+import { Image } from "astro:assets";
+import noSiteImage from "@/assets/no_sites.svg";
+import { db } from "@/db";
+import { Site } from "@/db/schema";
+import SiteCard from "./_components/SiteCard.astro";
+
+const sites = await db.select().from(Site);
 ---
+
 <AuthedLayout>
-  <main slot="content">
-    Site
+  <main slot="content" class="flex max-w-screen-xl flex-col space-y-12 p-8">
+    <div class="flex flex-col space-y-6">
+      <div class="flex items-center justify-between">
+        <h1 class="text-3xl font-bold dark:white-text">All Sites</h1>
+        <CreateSite />
+      </div>
+      {
+        sites.length > 0 ? (
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            {sites.map((site) => (
+              <SiteCard site={site} />
+            ))}
+          </div>
+        ) : (
+          <div class="flex flex-col items-center">
+            <Image
+              src={noSiteImage}
+              alt="No Sites found."
+              width={500}
+              height={500}
+              class="my-12"
+            />
+            <h1 class="text-xl text-gray-600">
+              You do not have any sites yet. Create one to get started.
+            </h1>
+          </div>
+        )
+      }
+    </div>
   </main>
 </AuthedLayout>

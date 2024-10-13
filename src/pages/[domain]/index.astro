@@ -1,26 +1,32 @@
 ---
-import Card from '../../components/Card.astro';
-import Layout from '../../layouts/Layout.astro';
+import Card from "../../components/Card.astro";
+import Layout from "../../layouts/Layout.astro";
 // Fetch remotely...
-const domains = [{
-  domain: 'demo',
-  title: "Demo Site",
-  description: "An executive summary"
-}, {
-  domain: 'test',
-  title: "test site",
-  description: 'A test summary'
-}]
-const {domain} = Astro.params
+const domains = [
+  {
+    domain: "demo",
+    title: "Demo Site",
+    description: "An executive summary",
+  },
+  {
+    domain: "test",
+    title: "test site",
+    description: "A test summary",
+  },
+];
+const { domain } = Astro.params;
 
-const site = domains.find(site => {
-  const subdomain = domain!.endsWith(`.${import.meta.env.PUBLIC_ROOT_DOMAIN}`) ? domain!.replace(`.${import.meta.env.PUBLIC_ROOT_DOMAIN}`, '') : null
-  return subdomain === site.domain
-})
+const site = domains.find((site) => {
+  const subdomain = domain!.endsWith(`.${import.meta.env.PUBLIC_ROOT_DOMAIN}`)
+    ? domain!.replace(`.${import.meta.env.PUBLIC_ROOT_DOMAIN}`, "")
+    : null;
+  return subdomain === site.domain;
+});
 if (!site) {
-  return Astro.redirect("404")
+  return Astro.redirect("404");
 }
 ---
+
 <Layout title="Demo Site">
   <main>
     <h1><span class="text-gradient">{site.title}</span></h1>
@@ -28,7 +34,11 @@ if (!site) {
       {site.description}
     </p>
     <ul role="list" class="link-card-grid">
-      <Card href={`${Astro.url.protocol}//${import.meta.env.PUBLIC_ROOT_DOMAIN}`} title="Back Home" body="" />
+      <Card
+        href={`${Astro.url.protocol}//${import.meta.env.PUBLIC_ROOT_DOMAIN}`}
+        title="Back Home"
+        body=""
+      />
     </ul>
   </main>
 </Layout>

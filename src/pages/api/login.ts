@@ -1,24 +1,14 @@
-import { lucia } from "../../lib/auth";
+import { lucia } from "@/lib/auth";
 import { Argon2id } from "oslo/password";
-import { db } from "../../db/index";
-import { User } from "../../../db/schema";
+import { db } from "@/db/index";
+import { User } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import type { APIContext } from "astro";
 
 export async function POST(context: APIContext): Promise<Response> {
   const formData = await context.request.formData();
-  const email = (formData.get("username") as string).trim();
+  const email = (formData.get("email") as string).trim();
 
-  // if (
-  //   typeof email !== "string" ||
-  //   email.length < 3 ||
-  //   email.length > 255 ||
-  //   !/.+@.+\..+/.test(email)
-  // ) {
-  //   return new Response("Invalid email", {
-  //     status: 400,
-  //   });
-  // }
   const password = formData.get("password");
 
   if (
@@ -56,6 +46,7 @@ export async function POST(context: APIContext): Promise<Response> {
 
   const session = await lucia.createSession(existingUser.id, {});
   const sessionCookie = lucia.createSessionCookie(session.id);
+  console.error(sessionCookie);
   context.cookies.set(
     sessionCookie.name,
     sessionCookie.value,

@@ -6,8 +6,8 @@ config({ path: ".env" });
 
 export default defineConfig({
   dialect: "turso",
-  schema: "./db/schema.ts",
-  out: "./db/migrations",
+  schema: "./src/db/schema.ts",
+  out: "./src/db/migrations",
   dbCredentials: {
     url: process.env.DB_REMOTE_URL!,
     authToken: process.env.DB_APP_TOKEN!,

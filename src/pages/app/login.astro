@@ -1,46 +1,61 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-
-const status = Astro.response.status;
-let redirectMessage;
-if (status === 301) {
-	redirectMessage = 'Your session is finished, please login again';
-}
+import Layout from "@/layouts/Layout.astro";
+import { actions } from "astro:actions";
+const result = Astro.getActionResult(actions.user.signInWithEmail);
+console.log("Got result: ", result);
+const authUrl = `${Astro.url.protocol}//${import.meta.env.PUBLIC_ROOT_AUTH_DOMAIN}`;
 ---
 
 <Layout title="Welcome to Astro.">
-	<main>
-		<h1>Welcome to <span class="text-gradient">Astro</span></h1>
-		<p class="instructions">
-			To get started, open the directory <code>src/pages</code> in your project.<br />
-			<strong>Code Challenge:</strong> Tweak the "Welcome to Astro" message above.
-			<strong>Login with:</strong> Username: <code>astro</code> Password: <code>astro</code>
-		</p>
-		{redirectMessage}
-		<div class="instructions">
-			<form action="/api/login" method="POST">
-				<label>
-					Username: <input type="text" minlength="1" id="username" name="username" />
-				</label>
-				<label>
-					Password: <input type="password" minlength="1" id="password" name="password" />
-				</label>
-	
-				<button>Submit</button>
-			</form>
-		</div>
-		<h3>Alternatively, <span class="text-gradient">Sign up below</span></h3>
-		<div class="instructions">
-			<form action="/api/signup" method="POST">
-				<label>
-					Username: <input type="text" minlength="1" id="username" name="username" />
-				</label>
-				<label>
-					Password: <input type="password" minlength="1" id="password" name="password" />
-				</label>
-	
-				<button>Submit</button>
-			</form>
-		</div>
-	</main>
+  <main>
+    <h1>Welcome to <span class="text-gradient">Astro</span></h1>
+    <p class="instructions">
+      To get started, open the directory <code>src/pages</code> in your project.<br
+      />
+      <strong>Code Challenge:</strong> Tweak the "Welcome to Astro" message above.
+      <strong>Login with:</strong> Username: <code>astro</code> Password: <code
+        >astro</code
+      >
+    </p>
+    <div class="instructions">
+      <form action="/api/login" method="POST">
+        <label>
+          Username: <input type="email" id="email" name="email" />
+        </label>
+        <label>
+          Password: <input
+            type="password"
+            minlength="1"
+            id="password"
+            name="password"
+          />
+        </label>
+
+        <button>Submit</button>
+      </form>
+    </div>
+    <h3>Alternatively, <span class="text-gradient">Sign up below</span></h3>
+    <div class="instructions">
+      <form action="/api/signup" method="POST">
+        <label>
+          Username: <input
+            type="email"
+            minlength="1"
+            id="registerEmail"
+            name="registerEmail"
+          />
+        </label>
+        <label>
+          Password: <input
+            type="password"
+            minlength="1"
+            id="registerPassword"
+            name="registerPassword"
+          />
+        </label>
+
+        <button>Submit</button>
+      </form>
+    </div>
+  </main>
 </Layout>

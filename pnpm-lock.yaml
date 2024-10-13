@@ -45,8 +45,8 @@ importers:
         specifier: ^1.1.1
         version: 1.1.1
       astro-sst:
-        specifier: 2.43.5
-        version: 2.43.5
+        specifier: 2.43.7
+        version: 2.43.7
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
@@ -1410,8 +1410,8 @@ packages:
   astro-icon@1.1.1:
     resolution: {integrity: sha512-HKBesWk2Faw/0+klLX+epQVqdTfSzZz/9+5vxXUjTJaN/HnpDf608gRPgHh7ZtwBPNJMEFoU5GLegxoDcT56OQ==}
 
-  astro-sst@2.43.5:
-    resolution: {integrity: sha512-CWSJO5Kdn7B6CI+qvd82T+ldqaI8y5HeQm4U9dGSSZe+v2KtArac94s2PaE27nxMTLy1JNG101cmyZj+1LhdjA==}
+  astro-sst@2.43.7:
+    resolution: {integrity: sha512-VaFYmB2+IV28NYypcY1cVyUk22DZzyidpvw+FO4vDWHSmNZbuaWJAuvZB88zkNqfoZn+54o91oTOXbSHjoCThg==}
 
   astro@4.15.10:
     resolution: {integrity: sha512-2NA9VWkIAxruq7GyR6ojpEqPLVlN2pyXqUDxiuXSEaaF1ajoQzLkXUIfhJgYmmVSIeTnd4ps9T4nTOEjWaOKrw==}
@@ -4791,7 +4791,7 @@ snapshots:
       - debug
       - supports-color
 
-  astro-sst@2.43.5:
+  astro-sst@2.43.7:
     dependencies:
       '@astrojs/webapi': 3.0.0
       set-cookie-parser: 2.7.0

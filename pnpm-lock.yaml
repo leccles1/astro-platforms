@@ -25,6 +25,9 @@ dependencies:
   '@nanostores/react':
     specifier: ^0.8.0
     version: 0.8.0(nanostores@0.11.3)(react@18.3.1)
+  '@tursodatabase/api':
+    specifier: ^1.8.1
+    version: 1.8.1
   '@types/react':
     specifier: ^18.3.11
     version: 18.3.11
@@ -2200,6 +2203,12 @@ packages:
   /@trysound/sax@0.2.0:
     resolution: {integrity: sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==}
     engines: {node: '>=10.13.0'}
+    dev: false
+
+  /@tursodatabase/api@1.8.1:
+    resolution: {integrity: sha512-/HhBZEJEtGtI3FlP+vZY0VG+/GRO9L/yaPOjg/lWRDi0x9tjX6pvDiX1QOaeadKzGVkXH6gM+HYEH8LZnvOhKQ==}
+    dependencies:
+      whatwg-fetch: 3.6.20
     dev: false
 
   /@tybys/wasm-util@0.8.3:
@@ -6294,6 +6303,10 @@ packages:
     engines: {node: '>=18'}
     dependencies:
       iconv-lite: 0.6.3
+    dev: false
+
+  /whatwg-fetch@3.6.20:
+    resolution: {integrity: sha512-EqhiFU6daOA8kpjOWTL0olhVOF3i7OrFzSYiGsEMB8GcXS+RrzauAERX65xMeNWVqxA6HXH2m69Z9LaKKdisfg==}
     dev: false
 
   /whatwg-mimetype@4.0.0:

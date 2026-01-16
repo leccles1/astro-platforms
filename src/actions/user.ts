@@ -11,7 +11,7 @@ export const user = {
       password: z.string().min(6).max(255),
     }),
     handler: async (input, context) => {
-      
+    const existing user = await db.select().from(User
     },
   }),
 };

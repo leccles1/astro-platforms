@@ -1,5 +1,6 @@
 import type { APIContext, APIRoute } from "astro";
 import { Argon2id } from "oslo/password";
+import { createHash } from 'node:crypto'
 import { lucia } from "@/lib/auth";
 import { db } from "@/db";
 import { User } from "@/db/schema";
@@ -7,8 +8,8 @@ import { User } from "@/db/schema";
 export const POST: APIRoute = async (context: APIContext) => {
   try {
     const data = await context.request.formData();
-    const email = (data.get("username") as string).trim();
-    const password = data.get("password");
+    const email = (data.get("registerEmail") as string).trim();
+    const password = data.get("registerPassword");
 
     if (
       typeof password !== "string" ||
@@ -46,6 +47,7 @@ export const POST: APIRoute = async (context: APIContext) => {
   } catch (e) {
     if (e instanceof Error) {
       console.error(e.message);
+      console.error(e)
     }
   }
   return new Response(null, { status: 400 });

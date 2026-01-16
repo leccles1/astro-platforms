@@ -1,4 +1,4 @@
-import { db } from "@/db";
+import { clientDb } from "@/db";
 import { Site } from "@/db/schema";
 import { defineAction, ActionError } from "astro:actions";
 import { z } from "astro:schema";
@@ -11,8 +11,10 @@ export const site = {
       subdomain: z.string(),
       description: z.string(),
     }),
-    handler: async (input) => {
+    handler: async (input, ctx) => {
       const { name, subdomain, description } = input;
+      const db = await clientDb(ctx.locals.user!.id)
+      
       try {
         const [site] = await db
           .insert(Site)
